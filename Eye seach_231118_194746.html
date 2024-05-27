@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .search-box {
+      position: relative;
+      display: inline-block;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 16px;
+      width: 200px;
+    }
+
+    .eye {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 24px;
+      background-color: white;
+      border-radius: 50%;
+      border: 2px solid #333;
+      overflow: hidden;
+    }
+
+    .pupil {
+      width: 12px;
+      height: 12px;
+      background-color: #333;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+  <title>Responsive Eye Search Box</title>
+</head>
+<body>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search...">
+    <div class="eye">
+      <div class="pupil" id="pupil"></div>
+    </div>
+  </div>
+
+  <script>
+    const eye = document.querySelector('.eye');
+    const pupil = document.getElementById('pupil');
+
+    document.addEventListener('mousemove', (e) => {
+      const { clientX: mouseX, clientY: mouseY } = e;
+
+      const eyeRect = eye.getBoundingClientRect();
+      const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+      const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+
+      const angle = Math.atan2(mouseY - eyeCenterY, mouseX - eyeCenterX);
+      const distance = Math.min(eyeRect.width / 4, eyeRect.height / 4);
+
+      const pupilX = Math.cos(angle) * distance;
+      const pupilY = Math.sin(angle) * distance;
+
+      pupil.style.transform = `translate(-50%, -50%) translate(${pupilX}px, ${pupilY}px)`;
+    });
+  </script>
+</body>
+</html>
